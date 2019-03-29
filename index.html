@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>nmb-empty-control</title>
+</head>
+<body>
+    <input type="text" required-ec="" value="df" onclick='emptycontrol.languageChange("tr")' />
+    <hr />
+    <input type="text" data-ec="userId2" />
+    <hr />
+    <textarea required-ec="warning"></textarea>
+    <hr />
+    <textarea required-ec="warning"></textarea>
+    <hr />
+    <button id="finish" onclick="alert(1)">POST DATA</button>
+    <script src="input.empty.control.js"></script>
+    <script>
+        emptycontrol.settings({
+           // selector: "textarea"
+        })
+        emptycontrol.fire();
+    </script>
+</body>
+</html>
