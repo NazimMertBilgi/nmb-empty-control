@@ -15,13 +15,20 @@
     <hr />
     <textarea required-ec="warning">deneme</textarea>
     <hr />
+    <div id="addDiv"></div>
     <button id="finish" onclick="alert(1)">POST DATA</button>
     <script src="input.empty.control.js"></script>
     <script>
         emptycontrol.settings({
             // selector: "textarea"
         })
-       emptycontrol.fire(); 
+    emptycontrol.fire();
+    setTimeout(function () {
+        document.getElementById("addDiv").insertAdjacentHTML('beforeend','<input type="text" required-ec="warning" minlength-ec="10" maxlength-ec="50" value="" />')
+    }, 2500)
+    setTimeout(function () {
+    emptycontrol.reFire();
+    }, 5000)
     </script>
 </body>
 </html>

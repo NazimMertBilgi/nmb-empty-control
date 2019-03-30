@@ -32,12 +32,12 @@ var emptycontrol;
             var appendHtml = false;
             if (required_ec[i].getAttribute("required-ec") === "warning") { // show required-ec-message
                 // defined above.
-               // appendHtml = true;
+                // appendHtml = true;
 
                 // if value not empty = display:none
                 if (required_ec[i].value === "" || required_ec[i] === null) cssDisplay = "";
 
-                    var currentMinLength = 0;
+                var currentMinLength = 0;
                 // min length
                 try {
                     let minLength = parseInt(required_ec[i].getAttribute("minlength-ec"));
@@ -90,6 +90,16 @@ var emptycontrol;
     }
 
     emptycontrol.fire = fire;
+
+    function reFire() {
+        var els = document.querySelectorAll('.required-ec-message');
+        for (var i = 0; i < els.length; i++) {
+            els[i].remove();
+        }
+        fire(); // re-fire!
+    }
+
+    emptycontrol.reFire = reFire;
 
     function detectValues() {
         var required_ec = document.querySelectorAll('[required-ec="warning"]');
@@ -166,7 +176,12 @@ var emptycontrol;
             else {
                 //only empty control.
                 if (next !== undefined) {
-                    next.style.display = ""; // display:show
+                    if (required_ec[i].getAttribute("maxlength-ec") !== null) { // maxlength attr value == "" => display:none
+                        next.style.display = "none";
+                    }
+                    else {
+                        next.style.display = ""; // display:show
+                    }
                 }
             }
         }
