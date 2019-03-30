@@ -1,0 +1,31 @@
+/*
+ * The MIT License
+ * 2019 Nazim Mert Bilgi <nmbjobs@outlook.com.tr>
+ */
+
+.required-ec-message{
+    color:red;
+}
+
+.required-ec-message-min-number {
+    color: blue;
+}
+
+.required-ec-message-max-number {
+    color: green;
+}
+.required-ec-message-min-max-number {
+    color:brown;
+}
+
+.required-ec-message-min-length {
+    color:blueviolet;
+}
+
+.required-ec-message-max-length {
+    color:crimson;
+}
+
+.required-ec-message-min-max-length {
+    color:lightseagreen;
+}
