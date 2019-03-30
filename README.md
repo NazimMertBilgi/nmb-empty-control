@@ -30,7 +30,7 @@ You can find configurations inside the html page.
 |--|--|--|--|
 |languageCode|Language Code|`string`|`en`|
 |selector|DOM selector.|`string`|`input[required-ec],textarea[required-ec]`|
-|dependentButton|Button controller. (disable-active feature)|`string`|`#finish`
+|dependentButton|Button controller.|`string`|`#finish`
 
 
 ## Contribution
