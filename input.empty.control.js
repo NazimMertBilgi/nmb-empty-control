@@ -128,7 +128,7 @@ var emptycontrol;
             currentRequired.onkeyup = function () { // onkeyup event created.
                 detectValues(this);
                 if (this.getAttribute("maxlength-hard-ec") !== null) maxLengthHard(this);
-            }; 
+            };
 
             currentRequired.onchange = function () { detectValues(this); }; // onchange event created.
         }
@@ -395,16 +395,21 @@ var emptycontrol;
         if (button !== null) button.disabled = true;
     }
 
-    function languageChange(languageCode) { // string: en, de, tr ..
+    function languageChange(languageCode) { // string: en, tr, de, ru ..
         emptycontrol.settings.languageCode = languageCode;
-        var required_ec_message = document.querySelectorAll('p[required-ec-message]');
+        var required_ec_message = document.querySelectorAll('.required-ec-message,.required-ec-message-min-number,.required-ec-message-max-number,'
+            + '.required-ec-message-min-max-number,.required-ec-message-min-length,.required-ec-message-max-length,.required-ec-message-min-max-length');
         for (var i = 0; i < required_ec_message.length; i++) {
-            required_ec_message[i].innerText = "warning";
+            required_ec_message[i].innerText = getLanguageWord(languageCode, required_ec_message[i].className);
         }
         console.log("Language change successfully!");
     }
 
     emptycontrol.languageChange = languageChange;
+
+    function getLanguageWord(langCode, className) {
+
+    }
 
     function maxLengthHard(thisObject) {
         try {
@@ -416,5 +421,56 @@ var emptycontrol;
             console.log(e);
         }
     }
+
+    emptycontrol.languageWordList = [
+        {
+            langCode: "en",
+            words: {
+                "required-ec-message": "Please don't empty.",
+                "required-ec-message-min-number": "Minimum {number}.",
+                "required-ec-message-max-number": "Maximum {number}",
+                "required-ec-message-min-max-number": "Minimum {number}. Maximum {number2}.",
+                "required-ec-message-min-length": "Minimum of {number} characters.",
+                "required-ec-message-max-length": "Maximum of {number} characters.",
+                "required-ec-message-min-max-length": "Minimum {number}, maximum {number2} characters."
+            }
+        },
+        {
+            langCode: "tr",
+            words: {
+                "required-ec-message": "Lütfen boþ býrakmayýn.",
+                "required-ec-message-min-number": "Minimum {number}.",
+                "required-ec-message-max-number": "Maksimum {number}",
+                "required-ec-message-min-max-number": "Minimum {number}. Maksimum {number2}.",
+                "required-ec-message-min-length": "Minimum {number} karakter giriniz.",
+                "required-ec-message-max-length": "Maksimum {number} karakter giriniz.",
+                "required-ec-message-min-max-length": "Minimum {number}, maksimum {number2} karakter giriniz."
+            }
+        },
+        {
+            langCode: "de",
+            words: {
+                "required-ec-message": "Bitte lass es nicht leer.",
+                "required-ec-message-min-number": "Minimum {number}.",
+                "required-ec-message-max-number": "Maximum {number}",
+                "required-ec-message-min-max-number": "Minimum {number}. Maximum {number2}.",
+                "required-ec-message-min-length": "Geben Sie mindestens {number} Zeichen ein.",
+                "required-ec-message-max-length": "Geben Sie bis zu {number} Zeichen ein.",
+                "required-ec-message-min-max-length": "Minimum {number}, maximum {number2} Zeichen ein."
+            }
+        },
+        {
+            langCode: "ru",
+            words: {
+                "required-ec-message": "??????????, ?? ?????????? ??? ??????",
+                "required-ec-message-min-number": "??????????? {number}",
+                "required-ec-message-max-number": "???????????? {number}",
+                "required-ec-message-min-max-number": "??????????? {number}. ???????????? {number2}",
+                "required-ec-message-min-length": "??????? ??????? {number} ????????",
+                "required-ec-message-max-length": "??????? ?? {number} ????????",
+                "required-ec-message-min-max-length": "??????? {number}, ???????? {number2} ????????"
+            }
+        }
+    ];
 
 })(emptycontrol || (emptycontrol = {}));
