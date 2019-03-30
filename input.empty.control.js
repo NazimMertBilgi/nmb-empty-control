@@ -27,16 +27,48 @@ var emptycontrol;
         var required_ec = document.querySelectorAll(emptycontrol.initSettings.selector);
         for (var i = 0; i < required_ec.length; i++) {
             let htmlInText = "Lütfen doldurun.";
-            let insertHtml = "<p class='required-ec-message'>" + htmlInText + "</p>";
+            let cssDisplay = "none";
+            let insertHtml = "<p class='required-ec-message' style='display:" + cssDisplay + "'>" + htmlInText + "</p>";
             var appendHtml = false;
             if (required_ec[i].getAttribute("required-ec") === "warning") { // show required-ec-message
                 // defined above.
-                appendHtml = true;
+               // appendHtml = true;
+
+                // if value not empty = display:none
+                if (required_ec[i].value === "" || required_ec[i] === null) cssDisplay = "";
+
+                    var currentMinLength = 0;
+                // min length
                 try {
                     let minLength = parseInt(required_ec[i].getAttribute("minlength-ec"));
                     if (!isNaN(minLength)) {
                         htmlInText = "Minimum " + minLength + " karakter giriniz.";
-                        insertHtml = "<p class='required-ec-message'>" + htmlInText + "</p>";
+
+                        if (required_ec[i].value.length < minLength) cssDisplay = "";
+
+                        insertHtml = "<p class='required-ec-message' style='display:" + cssDisplay + "'>" + htmlInText + "</p>";
+                        appendHtml = true;
+                        currentMinLength = minLength; // to use in maximum length message.
+                    }
+                } catch (e) {
+                    console.log(e);
+                    appendHtml = false;
+                    //string or empty value.
+                }
+
+                // max length
+                try {
+                    let maxLength = parseInt(required_ec[i].getAttribute("maxlength-ec"));
+                    if (!isNaN(maxLength)) {
+                        if (currentMinLength !== 0) {
+                            if (required_ec[i].value.length > maxLength) cssDisplay = "";
+                            htmlInText = "Minimum " + currentMinLength + ", maximum " + maxLength + " karakter giriniz.";
+                        }
+                        else {
+                            if (required_ec[i].value.length > maxLength) cssDisplay = "";
+                            htmlInText = "Maximum " + maxLength + " karakter giriniz.";
+                        }
+                        insertHtml = "<p class='required-ec-message' style='display:" + cssDisplay + "'>" + htmlInText + "</p>"; // default display: none
                         appendHtml = true;
                     }
                 } catch (e) {
@@ -46,8 +78,13 @@ var emptycontrol;
                 }
             }
 
+            if (appendHtml === false) {
+                insertHtml = "<p class='required-ec-message' style='display:" + cssDisplay + "'>" + htmlInText + "</p>";
+                appendHtml = true;
+            }
+
             if (appendHtml) required_ec[i].insertAdjacentHTML("afterend", insertHtml);
-            required_ec[i].onkeypress = function () { detectValues(); }; // onkeypress event created.
+            required_ec[i].onkeyup = function () { detectValues(); }; // onkeyup event created.
             required_ec[i].onchange = function () { detectValues(); }; // onchange event created.
         }
     }
@@ -64,34 +101,73 @@ var emptycontrol;
             var next = required_ec[i].nextElementSibling;
             if (required_ec[i].value !== "" && required_ec[i].value !== null) {
                 // minlength control
+                var currentMinLength = 0;
                 if (required_ec[i].getAttribute("minlength-ec") !== null) {
+
                     let minLength = parseInt(required_ec[i].getAttribute("minlength-ec"));
-                    try {
-                        if (!isNaN(minLength)) {
-                            if (required_ec[i].value.length >= minLength) {
-                                next.style.display = "none";
+                    currentMinLength = minLength;
+
+                    if (required_ec[i].getAttribute("maxlength-ec") === null) { // no maximum length attribute.
+                        try {
+                            if (!isNaN(minLength)) {
+                                if (required_ec[i].value.length >= minLength) {
+                                    next.style.display = "none";
+                                }
+                                else {
+                                    next.style.display = "";
+                                    reason++;
+                                }
                             }
-                            else {
+                        } catch (e) {
+                            console.log(e);
+                            //string or empty value.
+                        }
+                    }
+                }
+                // maxlength control
+                if (required_ec[i].getAttribute("maxlength-ec") !== null) {
+                    let maxLength = parseInt(required_ec[i].getAttribute("maxlength-ec"));
+                    try {
+                        if (!isNaN(maxLength)) {
+                            if (required_ec[i].value.length >= maxLength) {
                                 next.style.display = "";
                                 reason++;
+                            }
+                            else {
+                                if (currentMinLength !== 0) { // no minimum length
+                                    if (required_ec[i].value.length < currentMinLength) {
+                                        next.style.display = "";
+                                        reason++;
+                                    }
+                                    else {
+                                        next.style.display = "none";
+                                    }
+                                }
+                                else {
+                                    next.style.display = "none";
+                                }
                             }
                         }
                     } catch (e) {
                         console.log(e);
                         //string or empty value.
                     }
+
                 }
-                else {
-                    //only empty control.
+
+                //only empty control.
+                if (required_ec[i].getAttribute("minlength-ec") === null
+                    && required_ec[i].getAttribute("maxlength-ec") === null) {
                     if (next !== undefined) {
                         next.style.display = "none"; // display:none
                     }
                 }
-
             }
             else {
-                next.style.display = ""; // display:show
-                reason++;
+                //only empty control.
+                if (next !== undefined) {
+                    next.style.display = ""; // display:show
+                }
             }
         }
         if (reason === 0) {
@@ -101,28 +177,50 @@ var emptycontrol;
             var finder = Array.from(required_ec)
                 .find(el => el.value === '');
 
+            if (finder !== undefined) reason++; // there is still a space with a null value.
+
             // min length finder
             var finderMinLength = Array.from(required_ec)
                 .find(el => el.getAttribute("minlength-ec") !== null);
 
-                let minLength = parseInt(finderMinLength.getAttribute("minlength-ec"));
-                try {
-                    if (!isNaN(minLength)) {
-                        if (finderMinLength.value.length >= minLength) {
-                            // no problem.
-                        }
-                        else {
-                            reason++;
-                            // reason +1
-                        }
+            let minLength = parseInt(finderMinLength.getAttribute("minlength-ec"));
+            try {
+                if (!isNaN(minLength)) {
+                    if (finderMinLength.value.length >= minLength) {
+                        // no problem.
                     }
-                } catch (e) {
-                    console.log(e);
-                    //string or empty value.
+                    else {
+                        reason++;
+                        // reason +1
+                    }
                 }
+            } catch (e) {
+                console.log(e);
+                //string or empty value.
+            }
             //
 
-            if (finder === undefined && reason === 0) {
+            // max length finder
+            var finderMaxLength = Array.from(required_ec)
+                .find(el => el.getAttribute("maxlength-ec") !== null);
+            let maxLength = parseInt(finderMaxLength.getAttribute("maxlength-ec"));
+            try {
+                if (!isNaN(maxLength)) {
+                    if (finderMaxLength.value.length >= maxLength) {
+                        reason++;
+                        // reason +1
+                    }
+                    else {
+                        // no problem.
+                    }
+                }
+            } catch (e) {
+                console.log(e);
+                //string or empty value.
+            }
+            //
+
+            if (reason === 0) {
                 buttonActive(); // 0 empty input, textarea. button activated.
             }
             else {
