@@ -28,9 +28,9 @@ You can find configurations inside the html page.
 
 |Key|Description|Value Type|Default|
 |--|--|--|--|
-|languageCode|Language Code|`string`|`en`|
-|selector|DOM selector.|`string`|`input[required-ec],textarea[required-ec]`|
-|dependentButton|Button controller.|`string`|`#finish`
+|languageCode|Language Code. **[wiki](https://github.com/NazimMertBilgi/nmb-empty-control/wiki/Language-Select,-Change)**|`string`|`en`|
+|selector|DOM selector. **[wiki](https://github.com/NazimMertBilgi/nmb-empty-control/wiki/Selector-Change)**|`string`|`input[required-ec],textarea[required-ec]`|
+|dependentButton|Button controller. **[wiki](https://github.com/NazimMertBilgi/nmb-empty-control/wiki/Dependent-Button-Change)**|`string`|`#finish`
 
 
 ## Contribution
