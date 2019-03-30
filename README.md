@@ -5,6 +5,9 @@ Thanks to Pure JavaScript, it allows you to control your free space in HTML inpu
 
 ![nmb-empty-control-preview](https://github.com/NazimMertBilgi/nmb-empty-control/blob/master/docs/images/preview-nmb-empty-control.PNG)
 
+## Demo
+You can start the search with  **[this link](https://nazimmertbilgi.github.io/nmb-empty-control/)**
+
 ## Get Started Now
 ```
 <textarea required-ec="warning" minlength-ec="10" maxlength-hard-ec="20"></textarea>
@@ -20,9 +23,6 @@ Write down the codes and see what's going on.
 
 ## Wiki
 To be able to use it efficiently, please go to the Wiki page. "nmb-empty-control" will meet your requirements in field control. **[Wiki](https://github.com/NazimMertBilgi/nmb-empty-control/wiki)**
-
-## Demo
-You can start the search with  **[this link](https://nazimmertbilgi.github.io/nmb-empty-control/)**
 
 ## Languages
 Currently, there are 4 language support available. English, Turkish, German and Russian.
