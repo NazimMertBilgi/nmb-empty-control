@@ -1,6 +1,10 @@
 # nmb-empty-control
 Thanks to Pure JavaScript, it allows you to control your free space in HTML inputs very quickly.
 
+## Preview
+
+![nmb-empty-control-preview](https://github.com/NazimMertBilgi/nmb-empty-control/blob/master/docs/images/preview-nmb-empty-control.PNG)
+
 ## Get Started Now
 ```
 <textarea required-ec="warning" minlength-ec="10" maxlength-hard-ec="20"></textarea>
