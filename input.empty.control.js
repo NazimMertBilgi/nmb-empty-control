@@ -1,4 +1,4 @@
-"use strict";
+﻿"use strict";
 // Module
 var emptycontrol;
 (function (emptycontrol) {
@@ -26,9 +26,9 @@ var emptycontrol;
         if (emptycontrol.initSettings.selector === "" || emptycontrol.initSettings.selector === null) emptycontrol.initSettings.selector = defaultSelector;
         var required_ec = document.querySelectorAll(emptycontrol.initSettings.selector);
         for (var i = 0; i < required_ec.length; i++) {
-            let htmlInText = "L�tfen doldurun.";
             let cssDisplay = "none";
             let className = "required-ec-message";
+            let htmlInText = getLanguageWord(emptycontrol.initSettings.languageCode, className);
             let insertHtml = "<p class='" + className + "' style='display:" + cssDisplay + "'>" + htmlInText + "</p>";
             var appendHtml = false;
             var currentRequired = required_ec[i];
@@ -42,9 +42,11 @@ var emptycontrol;
                 try {
                     let minLength = parseInt(currentRequired.getAttribute("minlength-ec"));
                     if (!isNaN(minLength)) {
-                        htmlInText = "Minimum " + minLength + " karakter giriniz.";
 
                         className = "required-ec-message-min-length";
+                        htmlInText = getLanguageWord(emptycontrol.initSettings.languageCode, className)
+                            .replace("{number}", currentRequired.getAttribute("minlength-ec"));
+
                         insertHtml = "<p class='" + className + "' style='display:" + cssDisplay + "'>" + htmlInText + "</p>";
                         appendHtml = true;
                         currentMinLength = minLength; // to use in maximum length message.
@@ -60,12 +62,14 @@ var emptycontrol;
                     let maxLength = parseInt(currentRequired.getAttribute("maxlength-ec"));
                     if (!isNaN(maxLength)) {
                         if (currentMinLength !== 0) {
-                            htmlInText = "Minimum " + currentMinLength + ", maximum " + maxLength + " karakter giriniz.";
                             className = "required-ec-message-min-max-length";
+                            htmlInText = getLanguageWord(emptycontrol.initSettings.languageCode, className)
+                                .replace("{number}", currentRequired.getAttribute("minlength-ec")).replace("{number2}", currentRequired.getAttribute("maxlength-ec"));
                         }
                         else {
-                            htmlInText = "Maximum " + maxLength + " karakter giriniz.";
                             className = "required-ec-message-max-length";
+                            htmlInText = getLanguageWord(emptycontrol.initSettings.languageCode, className)
+                                .replace("{number}", currentRequired.getAttribute("maxlength-ec"));
                         }
                         insertHtml = "<p class='" + className + "' style='display:" + cssDisplay + "'>" + htmlInText + "</p>"; // default display: none
                         appendHtml = true;
@@ -80,10 +84,11 @@ var emptycontrol;
                 try {
                     let minNumber = parseInt(currentRequired.getAttribute("minnumber-ec"));
                     if (!isNaN(minNumber)) {
-                        htmlInText = "Minimum " + minNumber + ".";
-
 
                         className = "required-ec-message-min-number";
+                        htmlInText = getLanguageWord(emptycontrol.initSettings.languageCode, className)
+                            .replace("{number}", currentRequired.getAttribute("minnumber-ec"));
+
                         insertHtml = "<p class='" + className + "' style='display:" + cssDisplay + "'>" + htmlInText + "</p>";
                         appendHtml = true;
                         currentMinNumber = minNumber; // to use in maximum length message.
@@ -100,12 +105,14 @@ var emptycontrol;
                     let maxNumber = parseInt(currentRequired.getAttribute("maxnumber-ec"));
                     if (!isNaN(maxNumber)) {
                         if (currentMinNumber !== 0) {
-                            htmlInText = "Minimum " + currentMinNumber + ". Maximum " + maxNumber + ".";
                             className = "required-ec-message-min-max-number";
+                            htmlInText = getLanguageWord(emptycontrol.initSettings.languageCode, className)
+                                .replace("{number}", currentRequired.getAttribute("minnumber-ec")).replace("{number2}", currentRequired.getAttribute("maxnumber-ec"));
                         }
                         else {
-                            htmlInText = "Maximum " + maxNumber + ".";
                             className = "required-ec-message-max-number";
+                            htmlInText = getLanguageWord(emptycontrol.initSettings.languageCode, className)
+                                .replace("{number}", currentRequired.getAttribute("maxnumber-ec"));
                         }
                         insertHtml = "<p class='" + className + "' style='display:" + cssDisplay + "'>" + htmlInText + "</p>"; // default display: none
                         appendHtml = true;
@@ -400,7 +407,35 @@ var emptycontrol;
         var required_ec_message = document.querySelectorAll('.required-ec-message,.required-ec-message-min-number,.required-ec-message-max-number,'
             + '.required-ec-message-min-max-number,.required-ec-message-min-length,.required-ec-message-max-length,.required-ec-message-min-max-length');
         for (var i = 0; i < required_ec_message.length; i++) {
-            required_ec_message[i].innerText = getLanguageWord(languageCode, required_ec_message[i].className);
+            var currentRequired = required_ec_message[i];
+            var previousElement = required_ec_message[i].previousElementSibling; // required input, textarea.. 
+            if (currentRequired.className === "required-ec-message") {
+                required_ec_message[i].innerText = getLanguageWord(languageCode, currentRequired.className);
+            }
+            else if (currentRequired.className === "required-ec-message-min-number") {
+                required_ec_message[i].innerText = getLanguageWord(languageCode, currentRequired.className)
+                    .replace("{number}", previousElement.getAttribute("minnumber-ec"));
+            }
+            else if (currentRequired.className === "required-ec-message-max-number") {
+                required_ec_message[i].innerText = getLanguageWord(languageCode, currentRequired.className)
+                    .replace("{number}", previousElement.getAttribute("maxnumber-ec"));
+            }
+            else if (currentRequired.className === "required-ec-message-min-max-number") {
+                required_ec_message[i].innerText = getLanguageWord(languageCode, currentRequired.className)
+                    .replace("{number}", previousElement.getAttribute("minnumber-ec")).replace("{number2}", previousElement.getAttribute("maxnumber-ec"));
+            }
+            else if (currentRequired.className === "required-ec-message-min-length") {
+                required_ec_message[i].innerText = getLanguageWord(languageCode, currentRequired.className)
+                    .replace("{number}", previousElement.getAttribute("minlength-ec"));
+            }
+            else if (currentRequired.className === "required-ec-message-max-length") {
+                required_ec_message[i].innerText = getLanguageWord(languageCode, currentRequired.className)
+                    .replace("{number}", previousElement.getAttribute("maxlength-ec"));
+            }
+            else if (currentRequired.className === "required-ec-message-min-max-length") {
+                required_ec_message[i].innerText = getLanguageWord(languageCode, currentRequired.className)
+                    .replace("{number}", previousElement.getAttribute("minlength-ec")).replace("{number2}", previousElement.getAttribute("maxlength-ec"));
+            }
         }
         console.log("Language change successfully!");
     }
@@ -408,7 +443,8 @@ var emptycontrol;
     emptycontrol.languageChange = languageChange;
 
     function getLanguageWord(langCode, className) {
-
+        var langFinder = emptycontrol.languageWordList.find(a => a.langCode === langCode);
+        return langFinder.words[className];
     }
 
     function maxLengthHard(thisObject) {
@@ -438,7 +474,7 @@ var emptycontrol;
         {
             langCode: "tr",
             words: {
-                "required-ec-message": "L�tfen bo� b�rakmay�n.",
+                "required-ec-message": "Lütfen boş bırakmayın.",
                 "required-ec-message-min-number": "Minimum {number}.",
                 "required-ec-message-max-number": "Maksimum {number}",
                 "required-ec-message-min-max-number": "Minimum {number}. Maksimum {number2}.",
@@ -462,13 +498,13 @@ var emptycontrol;
         {
             langCode: "ru",
             words: {
-                "required-ec-message": "??????????, ?? ?????????? ??? ??????",
-                "required-ec-message-min-number": "??????????? {number}",
-                "required-ec-message-max-number": "???????????? {number}",
-                "required-ec-message-min-max-number": "??????????? {number}. ???????????? {number2}",
-                "required-ec-message-min-length": "??????? ??????? {number} ????????",
-                "required-ec-message-max-length": "??????? ?? {number} ????????",
-                "required-ec-message-min-max-length": "??????? {number}, ???????? {number2} ????????"
+                "required-ec-message": "Пожалуйста, не оставляйте это пустым",
+                "required-ec-message-min-number": "минимальный {number}",
+                "required-ec-message-max-number": "максимальная {number}",
+                "required-ec-message-min-max-number": "минимальный {number}. максимальная {number2}",
+                "required-ec-message-min-length": "Введите минимум {number} символов",
+                "required-ec-message-max-length": "Введите до {number} символов",
+                "required-ec-message-min-max-length": "Минимум {number}, максимум {number2} символов"
             }
         }
     ];

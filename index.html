@@ -5,7 +5,14 @@
     <link rel="stylesheet" type="text/css" href="empty.control.css">
 </head>
 <body>
-    <input type="number" required-ec="warning" minnumber-ec="10" maxnumber-ec="30" onclick='emptycontrol.languageChange("tr")' />
+    <select style="width:100px" onchange="emptycontrol.languageChange(this.value)">
+        <option value="en">English</option>
+        <option value="tr">Turkish</option>
+        <option value="de">Deutsch</option>
+        <option value="ru">Russian</option>
+    </select>
+    <hr />
+    <input type="number" required-ec="warning" minnumber-ec="10" maxnumber-ec="30" />
     <hr />
     <textarea required-ec="warning" minlength-ec="10"></textarea>
     <hr />
@@ -25,6 +32,7 @@
     <script>
         emptycontrol.settings({
             // selector: "textarea"
+            //languageCode:"tr"
         })
         emptycontrol.fire();
     </script>
