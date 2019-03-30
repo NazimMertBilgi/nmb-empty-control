@@ -15,7 +15,15 @@
                 <span class="contact100-form-title">
                     nmb-empty-control
                 </span>
-
+                <div class="wrap-input100 validate-input" data-validate="Message is required">
+                    <span class="label-input100">Select Language</span>
+                    <select id="changeLanguage">
+                        <option value="en">English</option>
+                        <option value="tr">Turkish</option>
+                        <option value="de">Deutsch</option>
+                        <option value="ru">Russian</option>
+                    </select>
+                </div>
                 <div class="wrap-input100 rs1-wrap-input100 validate-input">
                     <span class="label-input100">Not Empty Area *</span>
                     <input class="input100" type="text" required-ec="warning">
@@ -60,6 +68,8 @@
                     <textarea class="input100" placeholder="Your text here..." required-ec="warning" maxlength-hard-ec="20"></textarea>
                 </div>
 
+
+
                 <div class="container-contact100-form-btn">
                     <div class="wrap-contact100-form-btn">
                         <div class="contact100-form-bgbtn"></div>
@@ -84,6 +94,7 @@
         })
         emptycontrol.fire();
         document.getElementById("finish").onclick = function () { alert(1) };
+        document.getElementById("changeLanguage").onchange = function () { emptycontrol.languageChange(this.value) };
     </script>
 </body>
 </html>
