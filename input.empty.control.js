@@ -2,13 +2,13 @@
 // Module
 var emptycontrol;
 (function (emptycontrol) {
-    var defaultSelector = 'input[required-ec][type="text"],textarea[required-ec]'; 
+    var defaultSelector = 'input[required-ec],textarea[required-ec]';
 
     // Default settings.
     emptycontrol.initSettings = {
         languageCode: "en", // default languageCode
         selector: defaultSelector, // default selector integrated.
-        dependentButton : "#finish" // default dependentButton
+        dependentButton: "#finish" // default dependentButton
     };
 
     function settings(modification) {
@@ -26,25 +26,108 @@ var emptycontrol;
         if (emptycontrol.initSettings.selector === "" || emptycontrol.initSettings.selector === null) emptycontrol.initSettings.selector = defaultSelector;
         var required_ec = document.querySelectorAll(emptycontrol.initSettings.selector);
         for (var i = 0; i < required_ec.length; i++) {
-            let insertHtml = "<p required-ec-message ec-id='"+i+"' style='color:red'>Lütfen doldurun.</p>";
-            if (required_ec[i].getAttribute("required-ec") === "warning") {
-                required_ec[i].insertAdjacentHTML("afterend", insertHtml);
+            let htmlInText = "Lütfen doldurun.";
+            let insertHtml = "<p class='required-ec-message'>" + htmlInText + "</p>";
+            var appendHtml = false;
+            if (required_ec[i].getAttribute("required-ec") === "warning") { // show required-ec-message
+                // defined above.
+                appendHtml = true;
+                try {
+                    let minLength = parseInt(required_ec[i].getAttribute("minlength-ec"));
+                    if (!isNaN(minLength)) {
+                        htmlInText = "Minimum " + minLength + " karakter giriniz.";
+                        insertHtml = "<p class='required-ec-message'>" + htmlInText + "</p>";
+                        appendHtml = true;
+                    }
+                } catch (e) {
+                    console.log(e);
+                    appendHtml = false;
+                    //string or empty value.
+                }
             }
+
+            if (appendHtml) required_ec[i].insertAdjacentHTML("afterend", insertHtml);
             required_ec[i].onkeypress = function () { detectValues(); }; // onkeypress event created.
-            required_ec[i].onchange = function () { detectValues(); }; // onkeypress event created.
+            required_ec[i].onchange = function () { detectValues(); }; // onchange event created.
         }
     }
 
     emptycontrol.fire = fire;
 
     function detectValues() {
-       var required_ec = document.querySelectorAll(emptycontrol.initSettings.selector);
+        var required_ec = document.querySelectorAll('[required-ec="warning"]');
 
-        // find.
-        var finder = Array.from(required_ec)
-            .find(el => el.value === '');
-        if (finder === undefined) {
-            buttonActive(); // 0 empty input, textarea. button activated.
+        var reason = 0;
+
+        for (var i = 0; i < required_ec.length; i++) {
+            // warning message show or none.
+            var next = required_ec[i].nextElementSibling;
+            if (required_ec[i].value !== "" && required_ec[i].value !== null) {
+                // minlength control
+                if (required_ec[i].getAttribute("minlength-ec") !== null) {
+                    let minLength = parseInt(required_ec[i].getAttribute("minlength-ec"));
+                    try {
+                        if (!isNaN(minLength)) {
+                            if (required_ec[i].value.length >= minLength) {
+                                next.style.display = "none";
+                            }
+                            else {
+                                next.style.display = "";
+                                reason++;
+                            }
+                        }
+                    } catch (e) {
+                        console.log(e);
+                        //string or empty value.
+                    }
+                }
+                else {
+                    //only empty control.
+                    if (next !== undefined) {
+                        next.style.display = "none"; // display:none
+                    }
+                }
+
+            }
+            else {
+                next.style.display = ""; // display:show
+                reason++;
+            }
+        }
+        if (reason === 0) {
+            // find.
+            // required-ec != "warning"
+            required_ec = document.querySelectorAll('[required-ec]');
+            var finder = Array.from(required_ec)
+                .find(el => el.value === '');
+
+            // min length finder
+            var finderMinLength = Array.from(required_ec)
+                .find(el => el.getAttribute("minlength-ec") !== null);
+
+                let minLength = parseInt(finderMinLength.getAttribute("minlength-ec"));
+                try {
+                    if (!isNaN(minLength)) {
+                        if (finderMinLength.value.length >= minLength) {
+                            // no problem.
+                        }
+                        else {
+                            reason++;
+                            // reason +1
+                        }
+                    }
+                } catch (e) {
+                    console.log(e);
+                    //string or empty value.
+                }
+            //
+
+            if (finder === undefined && reason === 0) {
+                buttonActive(); // 0 empty input, textarea. button activated.
+            }
+            else {
+                buttonDisable();
+            }
         }
         else {
             buttonDisable();
@@ -71,5 +154,9 @@ var emptycontrol;
     }
 
     emptycontrol.languageChange = languageChange;
+
+    function isEmpty(str) {
+        return (!str || 0 === str.length);
+    }
 
 })(emptycontrol || (emptycontrol = {}));
