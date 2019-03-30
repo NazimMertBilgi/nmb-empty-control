@@ -6,7 +6,7 @@ Thanks to Pure JavaScript, it allows you to control your free space in HTML inpu
 ![nmb-empty-control-preview](https://github.com/NazimMertBilgi/nmb-empty-control/blob/master/docs/images/preview-nmb-empty-control.PNG)
 
 ## Demo
-You can start the search with  **[this link](https://nazimmertbilgi.github.io/nmb-empty-control/)**
+You can test it live from **[this link](https://nazimmertbilgi.github.io/nmb-empty-control/)**.
 
 ## Get Started Now
 ```
