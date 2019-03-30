@@ -36,8 +36,6 @@ var emptycontrol;
                 // defined above.
                 // appendHtml = true;
 
-                // if value not empty = display:none
-                if (required_ec[i].value === "" || required_ec[i] === null) cssDisplay = "";
 
                 var currentMinLength = 0;
                 var currentMinNumber = 0;
@@ -46,8 +44,6 @@ var emptycontrol;
                     let minLength = parseInt(required_ec[i].getAttribute("minlength-ec"));
                     if (!isNaN(minLength)) {
                         htmlInText = "Minimum " + minLength + " karakter giriniz.";
-
-                        if (required_ec[i].value.length < minLength) cssDisplay = "";
 
                         className = "required-ec-message-min-length";
                         insertHtml = "<p class='" + className + "' style='display:" + cssDisplay + "'>" + htmlInText + "</p>";
@@ -65,12 +61,10 @@ var emptycontrol;
                     let maxLength = parseInt(required_ec[i].getAttribute("maxlength-ec"));
                     if (!isNaN(maxLength)) {
                         if (currentMinLength !== 0) {
-                            if (required_ec[i].value.length > maxLength) cssDisplay = "";
                             htmlInText = "Minimum " + currentMinLength + ", maximum " + maxLength + " karakter giriniz.";
                             className = "required-ec-message-min-max-length";
                         }
                         else {
-                            if (required_ec[i].value.length > maxLength) cssDisplay = "";
                             htmlInText = "Maximum " + maxLength + " karakter giriniz.";
                             className = "required-ec-message-max-length";
                         }
@@ -89,7 +83,6 @@ var emptycontrol;
                     if (!isNaN(minNumber)) {
                         htmlInText = "Minimum " + minNumber + ".";
 
-                        if (parseInt(required_ec[i].value === "" ? 0 : required_ec[i].value) < minNumber) cssDisplay = "";
 
                         className = "required-ec-message-min-number";
                         insertHtml = "<p class='" + className + "' style='display:" + cssDisplay + "'>" + htmlInText + "</p>";
@@ -108,12 +101,10 @@ var emptycontrol;
                     let maxNumber = parseInt(required_ec[i].getAttribute("maxnumber-ec"));
                     if (!isNaN(maxNumber)) {
                         if (currentMinNumber !== 0) {
-                            if (required_ec[i].value > maxNumber) cssDisplay = "";
                             htmlInText = "Minimum " + currentMinNumber + ". Maximum " + maxNumber + ".";
                             className = "required-ec-message-min-max-number";
                         }
                         else {
-                            if (required_ec[i].value > maxNumber) cssDisplay = "";
                             htmlInText = "Maximum " + maxNumber + ".";
                             className = "required-ec-message-max-number";
                         }
