@@ -31,17 +31,16 @@ var emptycontrol;
             let className = "required-ec-message";
             let insertHtml = "<p class='" + className + "' style='display:" + cssDisplay + "'>" + htmlInText + "</p>";
             var appendHtml = false;
+            var currentRequired = required_ec[i];
 
-            if (required_ec[i].getAttribute("required-ec") === "warning") { // show required-ec-message
+            if (currentRequired.getAttribute("required-ec") === "warning") { // show required-ec-message
                 // defined above.
-                // appendHtml = true;
-
 
                 var currentMinLength = 0;
                 var currentMinNumber = 0;
                 // min length
                 try {
-                    let minLength = parseInt(required_ec[i].getAttribute("minlength-ec"));
+                    let minLength = parseInt(currentRequired.getAttribute("minlength-ec"));
                     if (!isNaN(minLength)) {
                         htmlInText = "Minimum " + minLength + " karakter giriniz.";
 
@@ -58,7 +57,7 @@ var emptycontrol;
 
                 // max length
                 try {
-                    let maxLength = parseInt(required_ec[i].getAttribute("maxlength-ec"));
+                    let maxLength = parseInt(currentRequired.getAttribute("maxlength-ec"));
                     if (!isNaN(maxLength)) {
                         if (currentMinLength !== 0) {
                             htmlInText = "Minimum " + currentMinLength + ", maximum " + maxLength + " karakter giriniz.";
@@ -79,7 +78,7 @@ var emptycontrol;
 
                 // min number
                 try {
-                    let minNumber = parseInt(required_ec[i].getAttribute("minnumber-ec"));
+                    let minNumber = parseInt(currentRequired.getAttribute("minnumber-ec"));
                     if (!isNaN(minNumber)) {
                         htmlInText = "Minimum " + minNumber + ".";
 
@@ -98,7 +97,7 @@ var emptycontrol;
 
                 // max number
                 try {
-                    let maxNumber = parseInt(required_ec[i].getAttribute("maxnumber-ec"));
+                    let maxNumber = parseInt(currentRequired.getAttribute("maxnumber-ec"));
                     if (!isNaN(maxNumber)) {
                         if (currentMinNumber !== 0) {
                             htmlInText = "Minimum " + currentMinNumber + ". Maximum " + maxNumber + ".";
@@ -125,8 +124,13 @@ var emptycontrol;
             }
 
             if (appendHtml) required_ec[i].insertAdjacentHTML("afterend", insertHtml);
-            required_ec[i].onkeyup = function () { detectValues(this); }; // onkeyup event created.
-            required_ec[i].onchange = function () { detectValues(this); }; // onchange event created.
+
+            currentRequired.onkeyup = function () { // onkeyup event created.
+                detectValues(this);
+                if (this.getAttribute("maxlength-hard-ec") !== null) maxLengthHard(this);
+            }; 
+
+            currentRequired.onchange = function () { detectValues(this); }; // onchange event created.
         }
     }
 
@@ -402,8 +406,15 @@ var emptycontrol;
 
     emptycontrol.languageChange = languageChange;
 
-    function isEmpty(str) {
-        return (!str || 0 === str.length);
+    function maxLengthHard(thisObject) {
+        try {
+            var limitNum = thisObject.getAttribute("maxlength-hard-ec");
+            if (thisObject.value.length > limitNum) {
+                thisObject.value = thisObject.value.substring(0, limitNum);
+            }
+        } catch (e) {
+            console.log(e);
+        }
     }
 
 })(emptycontrol || (emptycontrol = {}));
