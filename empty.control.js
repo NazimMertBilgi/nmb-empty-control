@@ -1,4 +1,4 @@
-﻿"use strict";
+"use strict";
 // Module
 var emptycontrol;
 (function (emptycontrol) {
@@ -300,11 +300,12 @@ var emptycontrol;
             if (finder !== undefined) reason++; // there is still a space with a null value.
 
             // min length finder
+            try {
             var finderMinLength = Array.from(required_ec)
                 .find(el => el.getAttribute("minlength-ec") !== null);
 
             let minLength = parseInt(finderMinLength.getAttribute("minlength-ec"));
-            try {
+            
                 if (!isNaN(minLength)) {
                     if (finderMinLength.value.length >= minLength) {
                         // no problem.
@@ -315,16 +316,17 @@ var emptycontrol;
                     }
                 }
             } catch (e) {
-                console.log(e);
+                //console.log(e);
                 //string or empty value.
             }
             //
 
             // max length finder
+            try {
             var finderMaxLength = Array.from(required_ec)
                 .find(el => el.getAttribute("maxlength-ec") !== null);
             let maxLength = parseInt(finderMaxLength.getAttribute("maxlength-ec"));
-            try {
+            
                 if (!isNaN(maxLength)) {
                     if (finderMaxLength.value.length >= maxLength) {
                         reason++;
@@ -335,16 +337,17 @@ var emptycontrol;
                     }
                 }
             } catch (e) {
-                console.log(e);
+                //console.log(e);
                 //string or empty value.
             }
             //
 
             // min number finder
+            try {
             var finderMinNumber = Array.from(required_ec)
                 .find(el => el.getAttribute("minnumber-ec") !== null);
             let minNumber = parseInt(finderMinNumber.getAttribute("minnumber-ec"));
-            try {
+            
                 if (!isNaN(minNumber)) {
                     if (finderMinNumber.value < minNumber) {
                         reason++;
@@ -355,16 +358,17 @@ var emptycontrol;
                     }
                 }
             } catch (e) {
-                console.log(e);
+               // console.log(e);
                 //string or empty value.
             }
             //
 
             // max number finder
+            try {
             var finderMaxNumber = Array.from(required_ec)
                 .find(el => el.getAttribute("maxnumber-ec") !== null);
             let maxNumber = parseInt(finderMaxNumber.getAttribute("maxnumber-ec"));
-            try {
+           
                 if (!isNaN(maxNumber)) {
                     if (finderMaxNumber.value > maxNumber) {
                         reason++;
@@ -375,7 +379,7 @@ var emptycontrol;
                     }
                 }
             } catch (e) {
-                console.log(e);
+                //console.log(e);
                 //string or empty value.
             }
             //
