@@ -5,15 +5,15 @@
     <link rel="stylesheet" type="text/css" href="empty.control.css">
 </head>
 <body>
-    <input type="number" required-ec="warning" maxnumber-ec="30" onclick='emptycontrol.languageChange("tr")' />
+    <input type="number" required-ec="warning" minnumber-ec="10" maxnumber-ec="30" onclick='emptycontrol.languageChange("tr")' />
     <hr />
-    <input type="text" data-ec="userId2" />
+    <textarea required-ec="warning" minlength-ec="10"></textarea>
     <hr />
-    <textarea required-ec="warning" minlength-ec="20">df</textarea>
+    <input type="text" required-ec="warning" maxlength-ec="20" value="" />
     <hr />
-    <input type="text" required-ec="warning" minlength-ec="10" maxlength-ec="50" value="dfsdfs" />
+    <input type="text" required-ec="warning" minlength-ec="10" maxlength-ec="20" value="" />
     <hr />
-    <textarea required-ec="warning">deneme</textarea>
+    <textarea required-ec="warning"></textarea>
     <hr />
     <div id="addDiv"></div>
     <button id="finish" onclick="alert(1)">POST DATA</button>
@@ -22,7 +22,7 @@
         emptycontrol.settings({
             // selector: "textarea"
         })
-    emptycontrol.fire();
+        emptycontrol.fire();
     </script>
 </body>
 </html>
