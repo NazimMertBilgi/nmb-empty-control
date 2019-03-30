@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>nmb-empty-control</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <!-- add  empty.control.css  -->
+    <link rel="stylesheet" type="text/css" href="../empty.control.css">
+</head>
+<body>
+    <div class="container-contact100" style="background-image: url('images/bg-01.jpg');">
+        <div class="wrap-contact100">
+            <div class="contact100-form validate-form">
+                <span class="contact100-form-title">
+                    nmb-empty-control
+                </span>
+
+                <div class="wrap-input100 rs1-wrap-input100 validate-input">
+                    <span class="label-input100">Not Empty Area *</span>
+                    <input class="input100" type="text" required-ec="warning">
+                </div>
+
+                <div class="wrap-input100 rs1-wrap-input100 validate-input">
+                    <span class="label-input100">Minimum Number *</span>
+                    <input class="input100" type="number" required-ec="warning" minnumber-ec="10">
+                </div>
+
+                <div class="wrap-input100 rs1-wrap-input100 validate-input">
+                    <span class="label-input100">Maximum Number *</span>
+                    <input class="input100" type="number" required-ec="warning" maxnumber-ec="20">
+                </div>
+
+                <div class="wrap-input100 rs1-wrap-input100 validate-input">
+                    <span class="label-input100">Minimum - Maximum Number *</span>
+                    <input class="input100" type="number" required-ec="warning" minnumber-ec="10" maxnumber-ec="20">
+                </div>
+
+                <div class="wrap-input100 rs1-wrap-input100 validate-input">
+                    <span class="label-input100">Minimum Length *</span>
+                    <input class="input100" type="text" required-ec="warning" minlength-ec="10">
+                </div>
+
+                <div class="wrap-input100 rs1-wrap-input100 validate-input">
+                    <span class="label-input100">Maximum Length *</span>
+                    <input class="input100" type="text" required-ec="warning" maxlength-ec="20">
+                </div>
+
+                <div class="wrap-input100 rs1-wrap-input100 validate-input">
+                    <span class="label-input100">Maximum Length Hard *</span>
+                    <input class="input100" type="text" required-ec="warning" maxlength-hard-ec="10">
+                </div>
+                <div class="wrap-input100 rs1-wrap-input100 validate-input">
+                    <span class="label-input100">Maximum Number Hard *</span>
+                    <input class="input100" type="number" required-ec="warning" maxlength-hard-ec="5">
+                </div>
+
+                <div class="wrap-input100 validate-input" data-validate="Message is required">
+                    <span class="label-input100">Textarea Maximum Length Hard</span>
+                    <textarea class="input100" placeholder="Your text here..." required-ec="warning" maxlength-hard-ec="20"></textarea>
+                </div>
+
+                <div class="container-contact100-form-btn">
+                    <div class="wrap-contact100-form-btn">
+                        <div class="contact100-form-bgbtn"></div>
+                        <button class="contact100-form-btn" id="finish">
+                            Submit
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <span class="contact100-more">
+            2019. <a href="https://github.com/NazimMertBilgi/nmb-empty-control">nmb-empty-control</a>
+        </span>
+    </div>
+
+    <script src="../empty.control.js"></script>
+    <script>
+        emptycontrol.settings({
+            dependentButton:"#finish",
+            languageCode:"en"
+        })
+        emptycontrol.fire();
+        document.getElementById("finish").onclick = function () { alert(1) };
+    </script>
+</body>
+</html>
