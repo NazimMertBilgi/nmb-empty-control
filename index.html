@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="empty.control.css">
 </head>
 <body>
-    <input type="text" required-ec="warning" value="df" onclick='emptycontrol.languageChange("tr")' />
+    <input type="number" required-ec="warning" maxnumber-ec="30" onclick='emptycontrol.languageChange("tr")' />
     <hr />
     <input type="text" data-ec="userId2" />
     <hr />
@@ -23,12 +23,6 @@
             // selector: "textarea"
         })
     emptycontrol.fire();
-    setTimeout(function () {
-        document.getElementById("addDiv").insertAdjacentHTML('beforeend','<input type="text" required-ec="warning" minlength-ec="10" maxlength-ec="50" value="" />')
-    }, 2500)
-    setTimeout(function () {
-    emptycontrol.reFire();
-    }, 5000)
     </script>
 </body>
 </html>
