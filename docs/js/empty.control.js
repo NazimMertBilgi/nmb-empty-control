@@ -21,7 +21,7 @@ var emptycontrol;
 
     function fire() {
         // Button disabled.
-        buttonDisable();
+        buttonDisable(0);
         // others
         if (emptycontrol.initSettings.selector === "" || emptycontrol.initSettings.selector === null) emptycontrol.initSettings.selector = defaultSelector;
         var required_ec = document.querySelectorAll(emptycontrol.initSettings.selector);
@@ -301,11 +301,11 @@ var emptycontrol;
 
             // min length finder
             try {
-            var finderMinLength = Array.from(required_ec)
-                .find(el => el.getAttribute("minlength-ec") !== null);
+                var finderMinLength = Array.from(required_ec)
+                    .find(el => el.getAttribute("minlength-ec") !== null);
 
-            let minLength = parseInt(finderMinLength.getAttribute("minlength-ec"));
-            
+                let minLength = parseInt(finderMinLength.getAttribute("minlength-ec"));
+
                 if (!isNaN(minLength)) {
                     if (finderMinLength.value.length >= minLength) {
                         // no problem.
@@ -323,10 +323,10 @@ var emptycontrol;
 
             // max length finder
             try {
-            var finderMaxLength = Array.from(required_ec)
-                .find(el => el.getAttribute("maxlength-ec") !== null);
-            let maxLength = parseInt(finderMaxLength.getAttribute("maxlength-ec"));
-            
+                var finderMaxLength = Array.from(required_ec)
+                    .find(el => el.getAttribute("maxlength-ec") !== null);
+                let maxLength = parseInt(finderMaxLength.getAttribute("maxlength-ec"));
+
                 if (!isNaN(maxLength)) {
                     if (finderMaxLength.value.length >= maxLength) {
                         reason++;
@@ -344,10 +344,10 @@ var emptycontrol;
 
             // min number finder
             try {
-            var finderMinNumber = Array.from(required_ec)
-                .find(el => el.getAttribute("minnumber-ec") !== null);
-            let minNumber = parseInt(finderMinNumber.getAttribute("minnumber-ec"));
-            
+                var finderMinNumber = Array.from(required_ec)
+                    .find(el => el.getAttribute("minnumber-ec") !== null);
+                let minNumber = parseInt(finderMinNumber.getAttribute("minnumber-ec"));
+
                 if (!isNaN(minNumber)) {
                     if (finderMinNumber.value < minNumber) {
                         reason++;
@@ -358,17 +358,17 @@ var emptycontrol;
                     }
                 }
             } catch (e) {
-               // console.log(e);
+                // console.log(e);
                 //string or empty value.
             }
             //
 
             // max number finder
             try {
-            var finderMaxNumber = Array.from(required_ec)
-                .find(el => el.getAttribute("maxnumber-ec") !== null);
-            let maxNumber = parseInt(finderMaxNumber.getAttribute("maxnumber-ec"));
-           
+                var finderMaxNumber = Array.from(required_ec)
+                    .find(el => el.getAttribute("maxnumber-ec") !== null);
+                let maxNumber = parseInt(finderMaxNumber.getAttribute("maxnumber-ec"));
+
                 if (!isNaN(maxNumber)) {
                     if (finderMaxNumber.value > maxNumber) {
                         reason++;
@@ -388,12 +388,13 @@ var emptycontrol;
                 buttonActive(); // 0 empty input, textarea. button activated.
             }
             else {
-                buttonDisable();
+                buttonDisable(1);
             }
         }
         else {
-            buttonDisable();
+            buttonDisable(1); // only button disabled.
         }
+        return reason;
     }
 
     function buttonActive() {
@@ -401,9 +402,21 @@ var emptycontrol;
         if (button !== null) button.disabled = false;
     }
 
-    function buttonDisable() {
+    function buttonDisable(type = 0) {
         var button = document.querySelector(emptycontrol.initSettings.dependentButton);
-        if (button !== null) button.disabled = true;
+        if (button !== null) button.setAttribute("tabindex", "-1");
+        if (type === 1) {
+            if (button !== null) button.disabled = true;
+            return;
+        }
+        if (button !== null) {
+            button.onmouseover = function () {
+                var allEmptyControlDOM = document.querySelectorAll(emptycontrol.initSettings.selector);
+                for (var i = 0; i < allEmptyControlDOM.length; i++) {
+                   detectValues(allEmptyControlDOM[i]);
+                }
+            };
+        }
     }
 
     function languageChange(languageCode) { // string: en, tr, de, ru ..
